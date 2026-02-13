@@ -40,12 +40,6 @@ class AIWidget extends Widget {
         const sendBtn = el.querySelector('.ai-send');
         const messagesContainer = el.querySelector('.ai-messages');
 
-        // Hide Close Button for AI Widget (Permanent)
-        const closeBtn = el.querySelector('.close-btn');
-        if (closeBtn) {
-            closeBtn.style.display = 'none';
-        }
-
         // Scroll to bottom
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
