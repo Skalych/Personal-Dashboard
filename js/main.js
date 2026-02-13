@@ -150,7 +150,8 @@ class App {
                 apiKeyInput.value = store.getSettings().apiKey || '';
                 settingsModal.classList.remove('hidden');
             });
-            document.body.appendChild(btn);
+            const appContainer = document.getElementById('app');
+            if (appContainer) appContainer.appendChild(btn);
         }
 
         // Add "Back to Welcome" button
@@ -166,8 +167,11 @@ class App {
                 onboarding.classList.remove('hidden');
                 // Hide floating buttons
                 this.toggleFloatingButtons(false);
+                // Close any open modals
+                this.closeAllModals();
             });
-            document.body.appendChild(backBtn);
+            const appContainer = document.getElementById('app');
+            if (appContainer) appContainer.appendChild(backBtn);
         }
 
         // Theme Toggle Logic
@@ -222,6 +226,8 @@ class App {
             onboarding.classList.add('hidden');
             // Show floating buttons
             this.toggleFloatingButtons(true);
+            // Close any open modals
+            this.closeAllModals();
 
             // Only add initial widgets if none exist
             if (store.getWidgets().length === 0) {
@@ -248,6 +254,19 @@ class App {
             const el = document.getElementById(id);
             if (el) el.style.display = show ? '' : 'none';
         });
+    }
+
+    closeAllModals() {
+        const modals = document.querySelectorAll('.modal, #widget-menu');
+        modals.forEach(modal => {
+            modal.classList.add('hidden');
+        });
+        // Reset add button rotation if menu was open
+        const addBtn = document.getElementById('add-widget-btn');
+        if (addBtn) {
+            const icon = addBtn.querySelector('i');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        }
     }
 
     loadSettings() {

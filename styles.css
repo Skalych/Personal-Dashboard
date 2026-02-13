@@ -290,7 +290,7 @@ body {
     cursor: pointer;
     box-shadow: var(--shadow-md);
     transition: all 0.2s ease;
-    z-index: 500;
+    z-index: 3000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -768,7 +768,7 @@ button {
     position: fixed;
     top: 24px;
     right: 24px;
-    z-index: 500;
+    z-index: 3000;
     width: 48px;
     height: 48px;
     border-radius: 12px;
@@ -3063,6 +3063,8 @@ input:checked+.slider:before {
         min-height: 200px;
         margin-bottom: 16px;
         padding: 20px;
+        touch-action: auto;
+        user-select: auto;
     }
 
     .widget.dragging {
@@ -3111,6 +3113,28 @@ input:checked+.slider:before {
         height: 52px;
         border-radius: 16px;
         font-size: 20px;
+        pointer-events: auto !important;
+    }
+
+    .settings-btn {
+        top: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        font-size: 18px;
+        z-index: 3000;
+        pointer-events: auto !important;
+    }
+
+    .back-to-welcome-btn {
+        top: 20px;
+        left: 20px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        font-size: 1.1rem;
+        pointer-events: auto !important;
     }
 
     /* Widget menu - full width overlay on mobile */
@@ -3237,7 +3261,7 @@ input:checked+.slider:before {
     color: var(--accent-color);
     box-shadow: var(--shadow-md);
     cursor: pointer;
-    z-index: 1000;
+    z-index: 3000;
     display: flex;
     align-items: center;
     justify-content: center;
