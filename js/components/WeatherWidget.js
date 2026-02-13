@@ -61,6 +61,7 @@ class WeatherWidget extends Widget {
 
     render() {
         const el = super.render();
+        el.classList.add('weather-widget');
 
         // Let widget grow to fit content (override fixed height from base)
         el.style.height = 'auto';
@@ -83,7 +84,10 @@ class WeatherWidget extends Widget {
         searchInput.addEventListener('mousedown', (e) => e.stopPropagation());
         resultsList.addEventListener('mousedown', (e) => e.stopPropagation());
 
-        searchInput.addEventListener('focus', () => searchInput.select());
+        searchInput.addEventListener('focus', () => {
+            searchInput.select();
+            el.classList.add('searching');
+        });
 
         searchInput.addEventListener('input', () => {
             clearTimeout(this.searchTimeout);
@@ -104,7 +108,10 @@ class WeatherWidget extends Widget {
         });
 
         searchInput.addEventListener('blur', () => {
-            setTimeout(() => { resultsList.style.display = 'none'; }, 200);
+            setTimeout(() => {
+                resultsList.style.display = 'none';
+                el.classList.remove('searching');
+            }, 200);
         });
     }
 

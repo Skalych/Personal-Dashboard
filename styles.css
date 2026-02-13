@@ -99,6 +99,17 @@ body {
     transition: box-shadow 0.3s ease, transform 0.1s;
 }
 
+/* Allow weather widget to show search results outside its bounds */
+.weather-widget,
+.weather-widget .widget-content {
+    overflow: visible !important;
+}
+
+/* Raise z-index when searching to stay above other widgets */
+.weather-widget.searching {
+    z-index: 1000 !important;
+}
+
 .widget:hover {
     box-shadow: var(--shadow-md);
     z-index: 10;
