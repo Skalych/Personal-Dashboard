@@ -87,7 +87,7 @@ body {
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
     user-select: none;
     touch-action: none;
     transition: box-shadow 0.3s ease, transform 0.1s;
@@ -144,9 +144,10 @@ body {
 
 .widget-content {
     flex: 1;
-    overflow: visible;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 /* Onboarding */
@@ -320,6 +321,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .ai-messages {
@@ -329,6 +332,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    min-height: 0;
 }
 
 .message {

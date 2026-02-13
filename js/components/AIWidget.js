@@ -139,36 +139,51 @@ class AIWidget extends Widget {
         // Using OpenRouter API
         const url = 'https://openrouter.ai/api/v1/chat/completions';
 
-        // Use the model specified by user or default to free one
-        const model = 'google/gemma-3-12b-it:free';
+        // Try multiple free models as fallback (Feb 2026)
+        const models = [
+            'deepseek/deepseek-r1-0528:free',
+            'google/gemma-3-4b-it:free',
+            'meta-llama/llama-3.3-70b-instruct:free'
+        ];
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'HTTP-Referer': window.location.href, // Optional, for including your app on openrouter.ai rankings.
-                'X-Title': 'Personal Dashboard', // Optional. Shows in rankings on openrouter.ai.
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "model": model,
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
-            })
-        });
+        let lastError = null;
 
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            const errorMessage = errorData.error?.message || `API request failed with status ${response.status}`;
-            throw new Error(errorMessage);
+        for (const model of models) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'HTTP-Referer': window.location.href,
+                        'X-Title': 'Personal Dashboard',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "model": model,
+                        "messages": [
+                            {
+                                "role": "user",
+                                "content": prompt
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    lastError = errorData.error?.message || `Status ${response.status}`;
+                    continue; // Try next model
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (e) {
+                lastError = e.message;
+                continue;
+            }
         }
 
-        const data = await response.json();
-        return data.choices[0].message.content;
+        throw new Error(lastError || 'All models failed');
     }
 }
 
