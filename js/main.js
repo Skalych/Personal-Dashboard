@@ -153,6 +153,23 @@ class App {
             document.body.appendChild(btn);
         }
 
+        // Add "Back to Welcome" button
+        if (!document.getElementById('back-to-welcome-btn')) {
+            const backBtn = document.createElement('button');
+            backBtn.id = 'back-to-welcome-btn';
+            backBtn.className = 'back-to-welcome-btn';
+            backBtn.innerHTML = '<i class="fas fa-home"></i>';
+            backBtn.title = 'Back to Welcome';
+
+            backBtn.addEventListener('click', () => {
+                const onboarding = document.getElementById('onboarding');
+                onboarding.classList.remove('hidden');
+                // Hide floating buttons
+                this.toggleFloatingButtons(false);
+            });
+            document.body.appendChild(backBtn);
+        }
+
         // Theme Toggle Logic
         const themeToggle = document.getElementById('theme-toggle');
         if (themeToggle) {
@@ -197,16 +214,17 @@ class App {
     }
 
     checkOnboarding() {
-        if (store.getWidgets().length === 0) {
-            // New user, show onboarding
-            const onboarding = document.getElementById('onboarding');
-            onboarding.classList.remove('hidden');
+        const onboarding = document.getElementById('onboarding');
+        const startBtn = document.getElementById('get-started-btn');
 
-            const startBtn = document.getElementById('get-started-btn');
-            startBtn.addEventListener('click', () => {
-                onboarding.classList.add('hidden');
+        // Always bind the click handler for returning from welcome
+        startBtn.addEventListener('click', () => {
+            onboarding.classList.add('hidden');
+            // Show floating buttons
+            this.toggleFloatingButtons(true);
 
-                // Add initial widgets
+            // Only add initial widgets if none exist
+            if (store.getWidgets().length === 0) {
                 const w1 = store.addWidget('ai', 50, 50);
                 const w2 = store.addWidget('weather', 450, 50);
                 const w3 = store.addWidget('note', 50, 450);
@@ -214,8 +232,22 @@ class App {
                 this.renderWidget(w1);
                 this.renderWidget(w2);
                 this.renderWidget(w3);
-            });
+            }
+        });
+
+        // Show onboarding for new users
+        if (store.getWidgets().length === 0) {
+            onboarding.classList.remove('hidden');
+            this.toggleFloatingButtons(false);
         }
+    }
+
+    toggleFloatingButtons(show) {
+        const ids = ['settings-btn', 'back-to-welcome-btn', 'add-widget-btn'];
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = show ? '' : 'none';
+        });
     }
 
     loadSettings() {
