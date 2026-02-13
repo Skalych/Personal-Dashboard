@@ -1,0 +1,20 @@
+.aurora-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20vh;
+    /* Adjust height as needed */
+    z-index: 0;
+    /* Behind other content but above background */
+    pointer-events: none;
+    transform: scaleY(-1);
+    /* Mirror effect */
+    opacity: 0.8;
+    /* Slight transparency */
+}
+
+/* Hide aurora when onboarding is active (handled by logic or CSS peer selector) */
+#onboarding:not(.hidden)~#aurora-background {
+    display: none;
+}
