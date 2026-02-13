@@ -110,6 +110,17 @@ body {
     z-index: 1000 !important;
 }
 
+/* Allow currency widget to show dropdowns outside its bounds */
+.currency-widget,
+.currency-widget .widget-content {
+    overflow: visible !important;
+}
+
+/* Raise z-index when dropdown is open to stay above other widgets */
+.currency-widget.dropdown-open {
+    z-index: 1000 !important;
+}
+
 .widget:hover {
     box-shadow: var(--shadow-md);
     z-index: 10;

@@ -120,8 +120,11 @@ class CurrencyWidget extends Widget {
                 el.querySelectorAll('.custom-options.open').forEach(opt => {
                     if (opt !== optionsContainer) opt.classList.remove('open');
                 });
-                optionsContainer.classList.toggle('open');
+                const isOpen = optionsContainer.classList.toggle('open');
                 trigger.classList.toggle('open');
+
+                if (isOpen) el.classList.add('dropdown-open');
+                else if (!el.querySelector('.custom-options.open')) el.classList.remove('dropdown-open');
             });
 
             // Select Option
@@ -135,6 +138,7 @@ class CurrencyWidget extends Widget {
 
                     optionsContainer.classList.remove('open');
                     trigger.classList.remove('open');
+                    el.classList.remove('dropdown-open');
 
                     this.save();
                     this.updateUI(el); // Re-render to update UI (simplest way)
@@ -148,6 +152,7 @@ class CurrencyWidget extends Widget {
             if (!el.contains(e.target)) {
                 el.querySelectorAll('.custom-options.open').forEach(opt => opt.classList.remove('open'));
                 el.querySelectorAll('.custom-select-trigger.open').forEach(tr => tr.classList.remove('open'));
+                el.classList.remove('dropdown-open');
             }
         });
     }
